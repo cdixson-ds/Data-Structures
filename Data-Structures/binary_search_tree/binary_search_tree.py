@@ -11,6 +11,8 @@ This part of the project comprises two days:
 """
 
 from doubly_linked_list import DoublyLinkedList
+from queue import Queue
+from stack import Stack
 
 
 class BSTNode:
@@ -56,10 +58,23 @@ class BSTNode:
 
     # Return the maximum value found in the tree
     def get_max(self):
-        if self.right:
-            return self.right.get_max()
-        else:
-            return self.value
+        # if self.right:
+        #     return self.right.get_max()
+        # else:
+        #     return self.value
+
+        if not self:
+            return None
+        while self.right:
+            self = self.right
+        return self.value
+
+    def get_min(self):
+        if not self:
+            return None
+        while self.left:
+            self = self.left
+        return self.value
             
 
     # Call the function `fn` on the value of each node
@@ -74,24 +89,52 @@ class BSTNode:
 
     # Print all the values in order from low to high
     # Hint:  Use a recursive, depth first traversal
-    def in_order_print(self, BSTNode):
-        print(BSTNode.self.value)
+    def in_order_print(self):  #shouldn't take another parameter
+        # queue = Queue()
+        # queue.enqueue(node)    #self.left, self.right
+         
+        if self.left is not None:
+            self.left.in_order_print()
+        print(self.value)
+        if self.right is not None:
+            self.right.in_order_print()
 
-        if BSTNode.right:
-            BSTNode.in_order_print(BSTNode.right)
 
-        if BSTNode.left:
-            BSTNode.in_order_print(BSTNode.left)
 
     # Print the value of every node, starting with the given node,
     # in an iterative breadth first traversal
-    # def bft_print(self, BSTNode):
-    #     pass
+    def bft_print(self):
+        """instantiate a queue"""
+        queue = Queue()
+        """enqueue starting node (self)"""
+        queue.enqueue(self)
+
+        """while the queue is not empty dequeue the sarting node"""
+        while len(queue) > 0:
+            self = queue.dequeue()  
+            print(self.value)
+            if self.left:
+                queue.enqueue(self.left)  #enqueue left child
+            if self.right:
+                queue.enqueue(self.right)
+    
 
     # Print the value of every node, starting with the given node,
     # in an iterative depth first traversal
-    # def dft_print(self):
-    #     pass
+    def dft_print(self):
+        """instantiate a stack"""
+        stack = Stack()
+        """push starting node (self)"""
+        stack.push(self)
+        """while the stack is not empty pop the sarting node"""
+        while len(stack) > 0:
+            self = stack.pop()
+            print(self.value)
+            if self.left:
+                stack.push(self.left)
+            if self.right:
+                stack.push(self.right)
+
 
     # Stretch Goals -------------------------
     # Note: Research may be required
@@ -117,8 +160,9 @@ bst.insert(3)
 bst.insert(4)
 bst.insert(2)
 
-# bst.bft_print()
-# bst.dft_print()
+#bst.in_order_print
+#bst.bft_print()
+bst.dft_print()
 
 # print("elegant methods")
 # print("pre order")
